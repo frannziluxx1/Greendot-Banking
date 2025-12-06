@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenDot Bank - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9f2e8 100%);
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            background-color: white;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Header with Logo */
+        .login-header {
+            background: linear-gradient(135deg, #003C32 0%, #0A5A45 100%);
+            padding: 40px 30px 30px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        
+        /* Logo Container */
+        .greendot-logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 10;
+        }
+        
+        /* Green Circle/Dot */
+        .greendot-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00FF73, #00C853);
+        }
+        
+        /* Text Container */
+        .greendot-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+        }
+        
+        /* "GreenDot" Text */
+        .greendot-name {
+            color: #fff;
+            font-weight: 600;
+            font-size: 16px;
+            letter-spacing: -0.3px;
+        }
+        
+        /* "Bank" Text */
+        .greendot-bank {
+            color: #e0e0e0;
+            font-weight: 400;
+            font-size: 10px;
+            text-align: right;
+            margin-top: -1px;
+        }
+        
+        .welcome-text {
+            margin-top: 20px;
+        }
+        
+        .welcome-text h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .welcome-text p {
+            font-size: 14px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        /* Login Form */
+        .login-form {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 22px;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 15px 18px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: #fafafa;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #0A5A45;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(10, 90, 69, 0.1);
+        }
+        
+        .password-container {
+            position: relative;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        
+        .login-button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #003C32 0%, #0A5A45 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 60, 50, 0.2);
+        }
+        
+        .login-button:active {
+            transform: translateY(0);
+        }
+        
+        .login-button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Spinner for loading */
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Error Popup */
+        .error-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .error-popup.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .error-content {
+            background-color: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 320px;
+            text-align: center;
+            transform: translateY(30px) scale(0.9);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        .error-popup.active .error-content {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+        
+        .error-icon {
+            font-size: 50px;
+            color: #ff3b30;
+            margin-bottom: 20px;
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        .error-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #ff3b30;
+            margin-bottom: 10px;
+        }
+        
+        .error-message {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .error-button {
+            padding: 12px 30px;
+            background-color: #ff3b30;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .error-button:hover {
+            background-color: #e0352a;
+            transform: translateY(-2px);
+        }
+        
+        /* Footer */
+        .login-footer {
+            text-align: center;
+            padding: 20px 30px;
+            font-size: 12px;
+            color: #888;
+            border-top: 1px solid #eee;
+            background-color: #fafafa;
+        }
+        
+        .forgot-link {
+            color: #0A5A45;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            margin-top: 15px;
+            display: inline-block;
+        }
+        
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* Responsive */
+        @media (max-width: 480px) {
+            .login-container {
+                border-radius: 20px;
+            }
+            
+            .login-header {
+                padding: 35px 20px 25px;
+            }
+            
+            .login-form {
+                padding: 25px;
+            }
+            
+            .welcome-text h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <!-- Header with Logo -->
+        <div class="login-header">
+            <div class="greendot-logo">
+                <div class="greendot-dot"></div>
+                <div class="greendot-text">
+                    <div class="greendot-name">GreenDot</div>
+                    <div class="greendot-bank">Bank</div>
+                </div>
+            </div>
+            
+            <div class="welcome-text">
+                <h1>Welcome Back</h1>
+                <p>Secure login to your banking dashboard</p>
+            </div>
+        </div>
+        
+        <!-- Login Form -->
+        <form class="login-form" id="loginForm">
+            <div class="form-group">
+                <label class="form-label" for="name">Full Name</label>
+                <input type="text" id="name" class="form-input" placeholder="Enter your full name" required>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="email">Email Address</label>
+                <input type="email" id="email" class="form-input" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="routine">Routine Number</label>
+                <input type="text" id="routine" class="form-input" placeholder="Enter your routine number" required>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="pin">PIN</label>
+                <div class="password-container">
+                    <input type="password" id="pin" class="form-input" placeholder="Enter your 4-digit PIN" maxlength="4" required>
+                    <button type="button" class="toggle-password" id="togglePin">
+                        <i class="far fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <button type="submit" class="login-button" id="loginBtn">
+                <span id="btnText">Sign In</span>
+                <div class="spinner" id="loginSpinner" style="display: none;"></div>
+            </button>
+            
+            <a href="#" class="forgot-link">Forgot your PIN?</a>
+        </form>
+        
+        <div class="login-footer">
+            &copy; 2025 GreenDot Bank. All rights reserved.
+        </div>
+    </div>
+    
+    <!-- Error Popup -->
+    <div class="error-popup" id="errorPopup">
+        <div class="error-content">
+            <div class="error-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 class="error-title">Login Failed</h3>
+            <p class="error-message">Incorrect credentials. Please check your information and try again.</p>
+            <button class="error-button" id="closeError">Try Again</button>
+        </div>
+    </div>
+    
+    <script>
+        // Correct login credentials
+        const CORRECT_CREDENTIALS = {
+            name: "Alfredo Tercero",
+            email: "alfredtercero660@gmail.com",
+            routine: "124303120",
+            pin: "2875"
+        };
+        
+        // DOM Elements
+        const loginForm = document.getElementById('loginForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const btnText = document.getElementById('btnText');
+        const loginSpinner = document.getElementById('loginSpinner');
+        const errorPopup = document.getElementById('errorPopup');
+        const closeErrorBtn = document.getElementById('closeError');
+        const togglePinBtn = document.getElementById('togglePin');
+        const pinInput = document.getElementById('pin');
+        
+        // Toggle PIN visibility
+        togglePinBtn.addEventListener('click', function() {
+            const type = pinInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            pinInput.setAttribute('type', type);
+            
+            // Toggle eye icon
+            const eyeIcon = this.querySelector('i');
+            if (type === 'text') {
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        });
+        
+        // Form submission
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get input values
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const routine = document.getElementById('routine').value.trim();
+            const pin = document.getElementById('pin').value;
+            
+            // Show loading state
+            loginBtn.disabled = true;
+            btnText.textContent = "Signing In...";
+            loginSpinner.style.display = 'block';
+            
+            // Simulate network delay
+            setTimeout(() => {
+                // Validate credentials
+                const isNameValid = name.toLowerCase() === CORRECT_CREDENTIALS.name.toLowerCase();
+                const isEmailValid = email.toLowerCase() === CORRECT_CREDENTIALS.email.toLowerCase();
+                const isRoutineValid = routine === CORRECT_CREDENTIALS.routine;
+                const isPinValid = pin === CORRECT_CREDENTIALS.pin;
+                
+                if (isNameValid && isEmailValid && isRoutineValid && isPinValid) {
+                    // Successful login - redirect to home page
+                    btnText.textContent = "Login Successful!";
+                    loginSpinner.style.display = 'none';
+                    
+                    // Simulate redirect delay
+                    setTimeout(() => {
+                        window.location.href = "home.html";
+                    }, 800);
+                } else {
+                    // Failed login
+                    loginBtn.disabled = false;
+                    btnText.textContent = "Sign In";
+                    loginSpinner.style.display = 'none';
+                    
+                    // Show error popup
+                    showErrorPopup();
+                }
+            }, 1500);
+        });
+        
+        // Show error popup with animation
+        function showErrorPopup() {
+            errorPopup.classList.add('active');
+        }
+        
+        // Close error popup
+        closeErrorBtn.addEventListener('click', function() {
+            errorPopup.classList.remove('active');
+            
+            // Clear password field for security
+            pinInput.value = '';
+            pinInput.focus();
+        });
+        
+        // Optional: Add form validation hints
+        document.getElementById('pin').addEventListener('input', function(e) {
+            // Only allow numbers for PIN
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+        
+        document.getElementById('routine').addEventListener('input', function(e) {
+            // Only allow numbers for routine number
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    </script>
+</body>
+</html>

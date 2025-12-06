@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenDot Bank - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 0;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.05);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* App Header */
+        .app-header {
+            background-color: white;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .hamburger-menu {
+            font-size: 20px;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        /* Hamburger Menu Dropdown */
+        .hamburger-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            width: 200px;
+            padding: 10px 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .hamburger-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(5px);
+        }
+        
+        .menu-item {
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.2s ease;
+        }
+        
+        .menu-item:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .menu-item i {
+            width: 20px;
+            text-align: center;
+            color: #0A5A45;
+        }
+        
+        .menu-divider {
+            height: 1px;
+            background-color: #eee;
+            margin: 8px 0;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .greendot-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .greendot-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00FF73, #00C853);
+        }
+        
+        .greendot-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+        }
+        
+        .greendot-name {
+            color: #2d2d2d;
+            font-weight: 600;
+            font-size: 18px;
+            letter-spacing: -0.3px;
+        }
+        
+        .greendot-bank {
+            color: #5a5a5a;
+            font-weight: 400;
+            font-size: 10px;
+            text-align: right;
+            margin-top: -1px;
+        }
+        
+        .notification-bell {
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        /* Main Container */
+        .main-container {
+            padding: 20px;
+        }
+        
+        /* Balance Card */
+        .balance-card {
+            background: linear-gradient(135deg, #003C32 0%, #0A5A45 100%);
+            border-radius: 20px;
+            padding: 24px;
+            color: white;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 20px rgba(0, 60, 50, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 28px;
+        }
+        
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .profile-photo {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .greeting h3 {
+            font-weight: 500;
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 4px;
+        }
+        
+        .greeting h2 {
+            font-weight: 600;
+            font-size: 22px;
+        }
+        
+        .time-section {
+            text-align: right;
+        }
+        
+        .digital-clock {
+            font-weight: 600;
+            font-size: 18px;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+        
+        .date {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+        
+        .timezone {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-top: 2px;
+        }
+        
+        .balance-section {
+            margin-bottom: 24px;
+        }
+        
+        .balance-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .balance-value {
+            font-size: 36px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .eye-icon {
+            cursor: pointer;
+            font-size: 20px;
+            opacity: 0.8;
+        }
+        
+        .card-bottom {
+            background-color: rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        
+        .account-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .shield-icon {
+            font-size: 18px;
+            color: #AFFF9E;
+        }
+        
+        .account-text {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+        
+        .status-badge {
+            background-color: #ff3b30;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .action-button {
+            border: none;
+            border-radius: 10px;
+            padding: 10px 16px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+        
+        .transactions-btn {
+            background-color: white;
+            color: #003C32;
+        }
+        
+        .topup-btn {
+            background-color: #0A5A45;
+            color: white;
+        }
+        
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Actions Section */
+        .actions-section {
+            background-color: white;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            margin-bottom: 90px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #222;
+        }
+        
+        .section-subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 28px;
+        }
+        
+        .action-cards {
+            display: flex;
+            gap: 16px;
+        }
+        
+        .action-card {
+            flex: 1;
+            border-radius: 16px;
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .account-info-card {
+            background-color: white;
+            border: 1px solid #f0f0f0;
+        }
+        
+        .send-money-card {
+            background-color: #E9F2A8;
+            border: 1px solid #E9F2A8;
+        }
+        
+        .card-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        
+        .account-info-card .card-icon {
+            color: #0A5A45;
+        }
+        
+        .send-money-card .card-icon {
+            color: #5a6e0a;
+        }
+        
+        .card-text {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.05);
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            z-index: 10;
+        }
+        
+        .nav-button {
+            background-color: #f8f9fa;
+            border: none;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 20px;
+            text-decoration: none;
+            color: #333;
+        }
+        
+        .nav-button.active {
+            background-color: #0A5A45;
+            color: white;
+            box-shadow: 0 4px 10px rgba(10, 90, 69, 0.2);
+        }
+        
+        .nav-button:hover {
+            transform: translateY(-3px);
+        }
+        
+        .nav-home .nav-icon {
+            width: 12px;
+            height: 12px;
+            background-color: #0A5A45;
+            transform: rotate(45deg);
+        }
+        
+        .nav-button.active .nav-home .nav-icon {
+            background-color: white;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 420px) {
+            .card-bottom {
+                gap: 12px;
+            }
+            
+            .action-button {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+        }
+        
+        /* Pulse animation for transactions icon */
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+        
+        .pulse-icon {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Backdrop for hamburger menu */
+        .menu-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            z-index: 99;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+    <!-- App Header -->
+    <header class="app-header">
+        <div class="hamburger-menu" id="hamburgerBtn">
+            <i class="fas fa-bars"></i>
+            <div class="hamburger-dropdown" id="hamburgerMenu">
+                <a href="home.html" class="menu-item">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="history.html" class="menu-item">
+                    <i class="fas fa-history"></i>
+                    <span>History</span>
+                </a>
+                <div class="menu-divider"></div>
+                <a href="index.html" class="menu-item">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+        <div class="logo-container">
+            <div class="greendot-logo">
+                <div class="greendot-dot"></div>
+                <div class="greendot-text">
+                    <div class="greendot-name">GreenDot</div>
+                    <div class="greendot-bank">Bank</div>
+                </div>
+            </div>
+        </div>
+        <div class="notification-bell">
+            <i class="fas fa-bell"></i>
+        </div>
+    </header>
+    
+    <!-- Menu Backdrop -->
+    <div class="menu-backdrop" id="menuBackdrop"></div>
+    
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Balance Card -->
+        <div class="balance-card">
+            <div class="card-top">
+                <div class="profile-section">
+                    <div class="profile-photo">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="greeting">
+                        <h3 id="greetingText">Good Morning</h3>
+                        <h2>Alfred</h2>
+                    </div>
+                </div>
+                <div class="time-section">
+                    <div class="digital-clock" id="currentTime">10:24:16 AM</div>
+                    <div class="date" id="currentDate">Monday, 25 August 2025</div>
+                    <div class="timezone">Mountain Time (MT)</div>
+                </div>
+            </div>
+            
+            <div class="balance-section">
+                <div class="balance-label">
+                    Available Balance
+                </div>
+                <div class="balance-value">
+                    <span id="balanceAmount">$179,056 USD</span>
+                    <div class="eye-icon" id="eyeIcon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-bottom">
+                <div class="account-info">
+                    <div class="shield-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="account-text">Your Account Number: 2058********</div>
+                </div>
+                <div class="status-badge">Inactive</div>
+                <a href="history.html" class="action-button transactions-btn">
+                    <i class="fas fa-exchange-alt pulse-icon"></i>
+                    Transactions
+                </a>
+                <button class="action-button topup-btn">
+                    <i class="fas fa-plus"></i>
+                    Top up
+                </button>
+            </div>
+        </div>
+        
+        <!-- Actions Section -->
+        <div class="actions-section">
+            <h1 class="section-title">What would you like to do today?</h1>
+            <p class="section-subtitle">Choose from our popular actions below</p>
+            
+            <div class="action-cards">
+                <div class="action-card account-info-card">
+                    <div class="card-icon">
+                        <i class="far fa-id-card"></i>
+                    </div>
+                    <div class="card-text">Account Info</div>
+                </div>
+                
+                <div class="action-card send-money-card">
+                    <div class="card-icon">
+                        <i class="fas fa-paper-plane"></i>
+                    </div>
+                    <div class="card-text">Send Money</div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="home.html" class="nav-button active">
+            <i class="fas fa-home"></i>
+        </a>
+        <a href="history.html" class="nav-button">
+            <i class="fas fa-history"></i>
+        </a>
+    </nav>
+
+    <script>
+        // Toggle balance visibility
+        const eyeIcon = document.getElementById('eyeIcon');
+        const balanceAmount = document.getElementById('balanceAmount');
+        const originalBalance = '$179,056 USD';
+        let balanceVisible = true;
+        
+        eyeIcon.addEventListener('click', function() {
+            if (balanceVisible) {
+                balanceAmount.textContent = '******* USD';
+                eyeIcon.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            } else {
+                balanceAmount.textContent = originalBalance;
+                eyeIcon.innerHTML = '<i class="fas fa-eye"></i>';
+            }
+            balanceVisible = !balanceVisible;
+        });
+        
+        // Mountain Time (MT) clock with 12-hour format
+        function updateMountainTime() {
+            const now = new Date();
+            
+            // Convert to Mountain Time (UTC-7 or UTC-6 depending on DST)
+            // For simplicity, using UTC-6 (no DST handling in this demo)
+            const mountainTimeOffset = -6; // UTC-6 for Mountain Time
+            const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
+            const mountainTime = new Date(utcTime + (mountainTimeOffset * 3600000));
+            
+            // Format time in 12-hour format with AM/PM
+            const timeString = mountainTime.toLocaleTimeString('en-US', {
+                hour12: true,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            
+            // Format date
+            const dateString = mountainTime.toLocaleDateString('en-US', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+            
+            // Update display
+            document.getElementById('currentTime').textContent = timeString;
+            document.getElementById('currentDate').textContent = dateString;
+            
+            // Update greeting based on time of day
+            updateGreeting(mountainTime);
+        }
+        
+        // Update greeting based on time of day
+        function updateGreeting(mountainTime) {
+            const currentHour = mountainTime.getHours();
+            
+            let greeting = "Good Morning";
+            
+            if (currentHour >= 12 && currentHour < 18) {
+                greeting = "Good Afternoon";
+            } else if (currentHour >= 18) {
+                greeting = "Good Evening";
+            }
+            
+            // Update the greeting text
+            document.getElementById('greetingText').textContent = greeting;
+        }
+        
+        // Update time immediately and then every second
+        updateMountainTime();
+        setInterval(updateMountainTime, 1000);
+        
+        // Hamburger menu functionality
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const hamburgerMenu = document.getElementById('hamburgerMenu');
+        const menuBackdrop = document.getElementById('menuBackdrop');
+        let menuOpen = false;
+        
+        hamburgerBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleMenu();
+        });
+        
+        menuBackdrop.addEventListener('click', function() {
+            closeMenu();
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (menuOpen && !hamburgerBtn.contains(e.target) && !hamburgerMenu.contains(e.target)) {
+                closeMenu();
+            }
+        });
+        
+        function toggleMenu() {
+            if (menuOpen) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        }
+        
+        function openMenu() {
+            hamburgerMenu.classList.add('active');
+            menuBackdrop.classList.add('active');
+            menuOpen = true;
+        }
+        
+        function closeMenu() {
+            hamburgerMenu.classList.remove('active');
+            menuBackdrop.classList.remove('active');
+            menuOpen = false;
+        }
+        
+        // Add click interactions to action cards
+        document.querySelectorAll('.action-card').forEach(card => {
+            card.addEventListener('click', function() {
+                if (this.classList.contains('account-info-card')) {
+                    alert('Opening Account Information...');
+                } else if (this.classList.contains('send-money-card')) {
+                    alert('Opening Send Money...');
+                }
+            });
+        });
+        
+        // Top up button functionality
+        document.querySelector('.topup-btn').addEventListener('click', function() {
+            alert('Opening Top Up options...');
+        });
+        
+        // Update active nav button
+        const navButtons = document.querySelectorAll('.nav-button');
+        navButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                navButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
