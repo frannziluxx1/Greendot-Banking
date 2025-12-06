@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction History | GreenDot Bank</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        
+        :root {
+            --bg-primary: #F8F9FA;
+            --bg-secondary: #FFFFFF;
+            --primary: #00A651;
+            --primary-light: #E9F8EF;
+            --secondary: #C9A14A;
+            --text-primary: #1C1C1C;
+            --text-secondary: #6B6B6B;
+            --text-light: #A1A1A1;
+            --border: #EDEDED;
+            --shadow: rgba(0, 0, 0, 0.05);
+            --hover: #F2F2F2;
+            --positive: #00A651;
+            --negative: #E74C3C;
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            max-width: 480px;
+            margin: 0 auto;
+            position: relative;
+            min-height: 100vh;
+        }
+        
+      /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 20px 0;
+            background: var(--bg-primary);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-dot {
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(135deg, #00FF73, #00C853);
+            border-radius: 50%;
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+        }
+        
+        .logo-greendot {
+            font-weight: 600;
+            font-size: 18px;
+            color: var(--text-primary);
+            letter-spacing: -0.3px;
+        }
+        
+        .logo-bank {
+            font-weight: 400;
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-align: right;
+            margin-top: -1px;
+        }
+        
+        .menu-toggle {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .menu-toggle:hover {
+            background-color: var(--hover);
+        }
+        
+        .menu-line {
+            width: 18px;
+            height: 2px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        
+        /* Page Title */
+        .page-title {
+            padding: 20px 20px 0;
+            margin-bottom: 15px;
+        }
+        
+        .page-title h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+        
+        .page-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 0 20px 100px;
+        }
+        
+        /* Filter Section */
+        .filter-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+        
+        .filter-btn {
+            padding: 8px 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .filter-btn:hover {
+            background: var(--hover);
+        }
+        
+        /* Transaction Card */
+        .transaction-card {
+            background: var(--bg-secondary);
+            border-radius: 14px;
+            padding: 0;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px var(--shadow);
+            overflow: hidden;
+            animation: slideUp 0.5s ease-out;
+        }
+        
+        .transaction-header {
+            padding: 20px 20px 15px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .transaction-date {
+            font-size: 14px;
+            color: black;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .transaction-main {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .transaction-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .transaction-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-light);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 16px;
+        }
+        
+        .transaction-details h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .transaction-details p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .transaction-amount {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .amount-positive {
+            color: var(--positive);
+        }
+        
+        .amount-negative {
+            color: var(--negative);
+        }
+        
+        .transaction-footer {
+            padding: 15px 20px;
+            background: var(--bg-primary);
+            border-top: 1px solid var(--border);
+        }
+        
+        .transaction-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .empty-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--bg-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: var(--text-light);
+            font-size: 32px;
+        }
+        
+        .empty-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .empty-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            max-width: 280px;
+            margin: 0 auto;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 14px 0;
+            max-width: 480px;
+            margin: 0 auto;
+            box-shadow: 0 -2px 10px var(--shadow);
+            z-index: 10;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 11px;
+            transition: color 0.2s ease;
+        }
+        
+        .nav-item.active {
+            color: var(--primary);
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+        
+        /* Menu Dropdown */
+        .menu-dropdown {
+            position: absolute;
+            top: 70px;
+            right: 20px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 8px 0;
+            width: 160px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .menu-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .menu-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .menu-item:hover {
+            background-color: var(--hover);
+        }
+        
+        .menu-item.active {
+            color: var(--primary);
+        }
+        
+        .menu-icon {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+        
+        .menu-text {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        /* Animations */
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-dot"></div>
+            <div class="logo-text">
+                <span class="logo-greendot">greendot</span>
+                <span class="logo-bank">bank</span>
+            </div>
+        </div>
+        
+        <div class="menu-toggle" id="menuToggle">
+            <div class="menu-line"></div>
+            <div class="menu-line"></div>
+            <div class="menu-line"></div>
+        </div>
+        
+        <!-- Menu Dropdown -->
+        <div class="menu-dropdown" id="menuDropdown">
+        <div class="menu-item" id="homeBtn" onclick="window.location.href='home.html'">
+    <div class="menu-icon"><i class="fas fa-home"></i></div>
+    <div class="menu-text">Home</div>
+      </div>
+          <div class="menu-item" id="historyBtn" onclick="window.location.href='history.html'">
+    <div class="menu-icon"><i class="fas fa-history"></i></div>
+    <div class="menu-text">History</div>
+</div>
+            <div class="menu-item" id="logoutBtn" onclick="window.location.href='index.html'">
+    <div class="menu-icon"><i class="fas fa-sign-out-alt"></i></div>
+    <div class="menu-text">Logout</div>
+</div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Page Title -->
+    <div class="page-title">
+        <h1>Transaction History</h1>
+        <div class="page-subtitle">View your recent account activity</div>
+    </div>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <button class="filter-btn active">All Transactions</button>
+            <button class="filter-btn">Deposits</button>
+            <button class="filter-btn">Withdrawals</button>
+            <button class="filter-btn">Transfers</button>
+            <button class="filter-btn">This Month</button>
+        </div>
+                <!-- $150 Deposit Transaction -->
+        <div class="transaction-card">
+            <div class="transaction-header">
+              
+            </div>
+            <div class="transaction-main">
+                <div class="transaction-info">
+                    <div class="transaction-icon">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+                    <div class="transaction-details">
+                        <h3>Direct Deposit</h3>
+                        <p>Footlocker® Card</p>
+                    </div>
+                </div>
+                <div class="transaction-amount amount-positive">+$2,000.00</div>
+            </div>
+            <div class="transaction-footer">
+                <div class="transaction-status">
+                    <div class="status-dot"></div>
+                    Completed
+                </div>
+            </div>
+        </div>
+        
+                <!-- $150 Deposit Transaction -->
+        <div class="transaction-card">
+            <div class="transaction-header">
+              
+            </div>
+            <div class="transaction-main">
+                <div class="transaction-info">
+                    <div class="transaction-icon">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+                    <div class="transaction-details">
+                        <h3>Direct Deposit</h3>
+                        <p>Green Dot® Visa® Card</p>
+                    </div>
+                </div>
+                <div class="transaction-amount amount-positive">+$2,000,000.00</div>
+            </div>
+            <div class="transaction-footer">
+                <div class="transaction-status">
+                    <div class="status-dot"></div>
+                    Completed
+                </div>
+            </div>
+        </div>
+        <!-- $150 Deposit Transaction -->
+        <div class="transaction-card">
+            <div class="transaction-header">
+              
+            </div>
+            <div class="transaction-main">
+                <div class="transaction-info">
+                    <div class="transaction-icon">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+                    <div class="transaction-details">
+                        <h3>Direct Deposit</h3>
+                        <p>Footlocker® Card</p>
+                    </div>
+                </div>
+                <div class="transaction-amount amount-positive">+$500</div>
+            </div>
+            <div class="transaction-footer">
+                <div class="transaction-status">
+                    <div class="status-dot"></div>
+                    Completed
+                </div>
+            </div>
+        </div>
+        <!-- $150 Deposit Transaction -->
+        <div class="transaction-card">
+            <div class="transaction-header">
+                        </div>
+            <div class="transaction-main">
+                <div class="transaction-info">
+                    <div class="transaction-icon">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+                    <div class="transaction-details">
+                        <h3>Direct Deposit</h3>
+                        <p>Green Dot® Visa® Card</p>
+                    </div>
+                </div>
+                <div class="transaction-amount amount-positive">+$169.00</div>
+            </div>
+            <div class="transaction-footer">
+                <div class="transaction-status">
+                    <div class="status-dot"></div>
+                    Completed
+                </div>
+            </div>
+        </div>
+            </div>
+            <div class="transaction-main">
+                <div class="transaction-info">
+                    <div class="transaction-icon">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+                    <div class="transaction-details">
+                        <h3>Direct Deposit</h3>
+                        <p>Green Dot® Visa® Card</p>
+                    </div>
+                </div>
+                <div class="transaction-amount amount-positive">+$175,000.00</div>
+            </div>
+            <div class="transaction-footer">
+                <div class="transaction-status">
+                    <div class="status-dot"></div>
+                    Completed
+                </div>
+            </div>
+        </div>
+        
+        <!-- Empty State for Other Transactions -->
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="fas fa-receipt"></i>
+            </div>
+            <div class="empty-title">No other transactions yet</div>
+            <div class="empty-text">Your transaction history will appear here once you start using your account.</div>
+        </div>
+    </main>
+    
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="home.html" class="nav-item">
+            <i class="fas fa-home nav-icon"></i>
+            <span>Home</span>
+        </a>
+        <a href="history.html" class="nav-item active">
+            <i class="fas fa-history nav-icon"></i>
+            <span>History</span>
+        </a>
+    </nav>
+
+    <script>
+        // Get user data from localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const userName = localStorage.getItem('userName') || 'User';
+            
+            // Update page title with user's name if needed
+            // document.getElementById('welcomeText').textContent = `Transaction History - ${userName}`;
+        });
+        
+        // Filter functionality
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Menu functionality
+        const menuToggle = document.getElementById('menuToggle');
+        const menuDropdown = document.getElementById('menuDropdown');
+        
+        menuToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            menuDropdown.classList.toggle('active');
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function() {
+            menuDropdown.classList.remove('active');
+        });
+        
+        // Prevent menu from closing when clicking inside
+        menuDropdown.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+        
+        // Menu navigation
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function() {
+                if (this.querySelector('.menu-text').textContent === 'Home') {
+                    window.location.href = 'home.html';
+                } else if (this.querySelector('.menu-text').textContent === 'History') {
+                    window.location.href = 'history.html';
+                }
+            });
+        });
+        
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userEmail');
+            window.location.href = 'index.html';
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
