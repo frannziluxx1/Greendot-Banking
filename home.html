@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<!-- home.html -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenDot Bank - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- App Header -->
+    <header class="app-header">
+        <div class="hamburger-menu" id="hamburgerBtn">
+            <i class="fas fa-bars"></i>
+            <div class="hamburger-dropdown" id="hamburgerMenu">
+                <a href="home.html" class="menu-item">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="history.html" class="menu-item">
+                    <i class="fas fa-history"></i>
+                    <span>History</span>
+                </a>
+                <div class="menu-divider"></div>
+                <a href="index.html" class="menu-item">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+        <div class="logo-container">
+            <div class="greendot-logo">
+                <div class="greendot-dot"></div>
+                <div class="greendot-text">
+                    <div class="greendot-name">GreenDot</div>
+                    <div class="greendot-bank">Bank</div>
+                </div>
+            </div>
+        </div>
+        <div class="notification-bell">
+            <i class="fas fa-bell"></i>
+        </div>
+    </header>
+    
+    <!-- Menu Backdrop -->
+    <div class="menu-backdrop" id="menuBackdrop"></div>
+    
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Balance Card -->
+        <div class="balance-card">
+            <div class="card-top">
+                <div class="profile-section">
+                    <div class="profile-photo">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="greeting">
+                        <h3 id="greetingText">Good Morning</h3>
+                        <h2>Alfred Tercero</h2>
+                    </div>
+                </div>
+                <div class="time-section">
+                    <div class="digital-clock" id="currentTime">10:24:16 AM</div>
+                    <div class="date" id="currentDate">Monday, 25 August 2025</div>
+                    <div class="timezone">Mountain Time (MT)</div>
+                </div>
+            </div>
+            
+            <div class="balance-section">
+                <div class="balance-label">
+                    Available Balance
+                </div>
+                <div class="balance-value">
+                    <span id="balanceAmount">$179,056 USD</span>
+                    <div class="eye-icon" id="eyeIcon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-bottom">
+                <div class="account-info">
+                    <div class="shield-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="account-text">Your Account Number: 205837706132</div>
+                </div>
+                <div class="status-badge">Inactive</div>
+                <a href="history.html" class="action-button transactions-btn">
+                    <i class="fas fa-exchange-alt pulse-icon"></i>
+                    Transactions
+                </a>
+                <button class="action-button topup-btn">
+                    <i class="fas fa-plus"></i>
+                    Top up
+                </button>
+            </div>
+        </div>
+        
+        <!-- Actions Section -->
+        <div class="actions-section">
+            <h1 class="section-title">What would you like to do today?</h1>
+            <p class="section-subtitle">Choose from our popular actions below</p>
+            
+            <div class="action-cards">
+                <div class="action-card account-info-card">
+                    <div class="card-icon">
+                        <i class="far fa-id-card"></i>
+                    </div>
+                    <div class="card-text">Account Info</div>
+                </div>
+                
+                <div class="action-card send-money-card">
+                    <div class="card-icon">
+                        <i class="fas fa-paper-plane"></i>
+                    </div>
+                    <div class="card-text">Send Money</div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="home.html" class="nav-button active">
+            <i class="fas fa-home"></i>
+        </a>
+        <a href="history.html" class="nav-button">
+            <i class="fas fa-history"></i>
+        </a>
+    </nav>
+
+    <script src="script.js"></script>
+</body>
+</html>

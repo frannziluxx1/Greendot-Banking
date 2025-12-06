@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenDot Bank - Transaction History</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 0;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.05);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            perspective: 1000px;
+        }
+        
+        /* App Header */
+        .app-header {
+            background-color: white;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .hamburger-menu {
+            font-size: 20px;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        /* Hamburger Menu Dropdown */
+        .hamburger-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            width: 200px;
+            padding: 10px 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px) translateZ(-20px);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 100;
+            transform-style: preserve-3d;
+        }
+        
+        .hamburger-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(5px) translateZ(0);
+        }
+        
+        .menu-item {
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.2s ease;
+            transform-style: preserve-3d;
+        }
+        
+        .menu-item:hover {
+            background-color: #f5f5f5;
+            transform: translateX(5px) translateZ(5px);
+        }
+        
+        .menu-item i {
+            width: 20px;
+            text-align: center;
+            color: #0A5A45;
+        }
+        
+        .menu-divider {
+            height: 1px;
+            background-color: #eee;
+            margin: 8px 0;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .greendot-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform-style: preserve-3d;
+        }
+        
+        .greendot-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00FF73, #00C853);
+            transform: translateZ(5px);
+        }
+        
+        .greendot-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+            transform-style: preserve-3d;
+        }
+        
+        .greendot-name {
+            color: #2d2d2d;
+            font-weight: 600;
+            font-size: 18px;
+            letter-spacing: -0.3px;
+            transform: translateZ(3px);
+        }
+        
+        .greendot-bank {
+            color: #5a5a5a;
+            font-weight: 400;
+            font-size: 10px;
+            text-align: right;
+            margin-top: -1px;
+            transform: translateZ(2px);
+        }
+        
+        .notification-bell {
+            font-size: 20px;
+            cursor: pointer;
+            transform-style: preserve-3d;
+        }
+        
+        /* Main Container */
+        .main-container {
+            padding: 20px;
+            transform-style: preserve-3d;
+        }
+        
+        /* Page Header */
+        .page-header {
+            margin-bottom: 25px;
+            transform-style: preserve-3d;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #003C32;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.05);
+            transform: translateZ(10px);
+        }
+        
+        .page-subtitle {
+            font-size: 14px;
+            color: #666;
+            transform: translateZ(5px);
+        }
+        
+        /* History Cards Container */
+        .history-container {
+            transform-style: preserve-3d;
+        }
+        
+        /* History Card */
+        .history-card {
+            background-color: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            position: relative;
+            border-left: 4px solid transparent;
+            cursor: pointer;
+        }
+        
+        .history-card:hover {
+            transform: translateY(-5px) translateZ(10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .history-card.deposit {
+            border-left-color: #00C853;
+        }
+        
+        .history-card.reversed {
+            border-left-color: #FF9800;
+        }
+        
+        .history-card.rejected {
+            border-left-color: #ff3b30;
+        }
+        
+        .history-card.card-deposit {
+            border-left-color: #0A5A45;
+        }
+        
+        .card-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            transform-style: preserve-3d;
+        }
+        
+        .transaction-type {
+            font-weight: 600;
+            font-size: 16px;
+            transform: translateZ(8px);
+        }
+        
+        .transaction-amount {
+            font-weight: 700;
+            font-size: 18px;
+            transform: translateZ(10px);
+        }
+        
+        .transaction-amount.deposit {
+            color: #00C853;
+        }
+        
+        .transaction-amount.card-deposit {
+            color: #0A5A45;
+        }
+        
+        .transaction-amount.reversed, .transaction-amount.rejected {
+            color: #ff3b30;
+        }
+        
+        .transaction-details {
+            margin-bottom: 8px;
+            transform-style: preserve-3d;
+        }
+        
+        .transaction-from {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 4px;
+            transform: translateZ(5px);
+        }
+        
+        .transaction-card {
+            font-size: 13px;
+            color: #777;
+            transform: translateZ(4px);
+        }
+        
+        .transaction-date {
+            font-size: 12px;
+            color: #999;
+            transform: translateZ(3px);
+        }
+        
+        /* 3D Effects */
+        .history-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+            border-radius: 16px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .history-card:hover::before {
+            opacity: 1;
+        }
+        
+        /* Status Badges */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 8px;
+            transform: translateZ(5px);
+        }
+        
+        .status-deposit {
+            background-color: rgba(0, 200, 83, 0.1);
+            color: #00C853;
+        }
+        
+        .status-reversed {
+            background-color: rgba(255, 152, 0, 0.1);
+            color: #FF9800;
+        }
+        
+        .status-rejected {
+            background-color: rgba(255, 59, 48, 0.1);
+            color: #ff3b30;
+        }
+        
+        /* Filter Section */
+        .filter-section {
+            background-color: white;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transform-style: preserve-3d;
+        }
+        
+        .filter-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #003C32;
+            transform: translateZ(5px);
+        }
+        
+        .filter-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            transform-style: preserve-3d;
+        }
+        
+        .filter-btn {
+            padding: 8px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            background-color: white;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+        }
+        
+        .filter-btn:hover {
+            transform: translateY(-2px) translateZ(5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .filter-btn.active {
+            background-color: #0A5A45;
+            color: white;
+            border-color: #0A5A45;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.05);
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            z-index: 10;
+            transform-style: preserve-3d;
+        }
+        
+        .nav-button {
+            background-color: #f8f9fa;
+            border: none;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 20px;
+            text-decoration: none;
+            color: #333;
+            transform-style: preserve-3d;
+        }
+        
+        .nav-button.active {
+            background-color: #0A5A45;
+            color: white;
+            box-shadow: 0 6px 15px rgba(10, 90, 69, 0.2);
+            transform: translateY(-5px) translateZ(10px);
+        }
+        
+        .nav-button:hover {
+            transform: translateY(-3px) translateZ(5px);
+        }
+        
+        /* Total Balance Card */
+        .total-balance-card {
+            background: linear-gradient(135deg, #003C32 0%, #0A5A45 100%);
+            border-radius: 16px;
+            padding: 20px;
+            color: white;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(0, 60, 50, 0.15);
+            transform-style: preserve-3d;
+            animation: cardEntrance 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            position: relative;
+        }
+        
+        .balance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .total-balance-label {
+            font-size: 14px;
+            opacity: 0.9;
+            transform: translateZ(5px);
+        }
+        
+        .eye-icon {
+            cursor: pointer;
+            font-size: 18px;
+            opacity: 0.8;
+            transform: translateZ(5px);
+        }
+        
+        .total-balance-value {
+            font-size: 28px;
+            font-weight: 700;
+            transform: translateZ(10px);
+        }
+        
+        /* Backdrop for hamburger menu */
+        .menu-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            z-index: 99;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Animation for card entrance */
+        @keyframes cardEntrance {
+            from {
+                opacity: 0;
+                transform: translateY(30px) translateZ(-50px) rotateX(10deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) translateZ(0) rotateX(0);
+            }
+        }
+        
+        .history-card {
+            animation: cardEntrance 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0;
+        }
+        
+        .history-card:nth-child(1) { animation-delay: 0.1s; }
+        .history-card:nth-child(2) { animation-delay: 0.2s; }
+        .history-card:nth-child(3) { animation-delay: 0.3s; }
+        .history-card:nth-child(4) { animation-delay: 0.4s; }
+        .history-card:nth-child(5) { animation-delay: 0.5s; }
+        .history-card:nth-child(6) { animation-delay: 0.6s; }
+        
+        /* Responsive */
+        @media (max-width: 420px) {
+            .filter-options {
+                gap: 8px;
+            }
+            
+            .filter-btn {
+                padding: 7px 14px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- App Header -->
+    <header class="app-header">
+        <div class="hamburger-menu" id="hamburgerBtn">
+            <i class="fas fa-bars"></i>
+            <div class="hamburger-dropdown" id="hamburgerMenu">
+                <a href="home.html" class="menu-item">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="history.html" class="menu-item">
+                    <i class="fas fa-history"></i>
+                    <span>History</span>
+                </a>
+                <div class="menu-divider"></div>
+                <a href="index.html" class="menu-item">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+        <div class="logo-container">
+            <div class="greendot-logo">
+                <div class="greendot-dot"></div>
+                <div class="greendot-text">
+                    <div class="greendot-name">GreenDot</div>
+                    <div class="greendot-bank">Bank</div>
+                </div>
+            </div>
+        </div>
+        <div class="notification-bell">
+            <i class="fas fa-bell"></i>
+        </div>
+    </header>
+    
+    <!-- Menu Backdrop -->
+    <div class="menu-backdrop" id="menuBackdrop"></div>
+    
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">Transaction History</h1>
+            <p class="page-subtitle">View all your recent transactions</p>
+        </div>
+        
+        <!-- Total Balance -->
+        <div class="total-balance-card">
+            <div class="balance-header">
+                <div class="total-balance-label">Total Balance</div>
+                <div class="eye-icon" id="balanceEyeIcon">
+                    <i class="fas fa-eye"></i>
+                </div>
+            </div>
+            <div class="total-balance-value" id="balanceAmount">$179,056 USD</div>
+        </div>
+        
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div class="filter-title">Filter by type:</div>
+            <div class="filter-options">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="deposit">Deposits</button>
+                <button class="filter-btn" data-filter="reversed">Reversed</button>
+                <button class="filter-btn" data-filter="rejected">Rejected</button>
+            </div>
+        </div>
+        
+        <!-- History Cards Container -->
+        <div class="history-container">
+            <!-- Reversed Deposit -->
+            <div class="history-card reversed" data-type="reversed">
+                <div class="card-top-row">
+                    <div class="transaction-type">Reversed Deposit</div>
+                    <div class="transaction-amount reversed">-$387.00</div>
+                </div>
+                <div class="transaction-details">
+                    <div class="transaction-card">Apple® Card</div>
+                </div>
+                <div class="status-badge status-reversed">Reversed</div>
+            </div>
+            
+            <!-- Rejected Deposit -->
+            <div class="history-card rejected" data-type="rejected">
+                <div class="card-top-row">
+                    <div class="transaction-type">Rejected Deposit</div>
+                    <div class="transaction-amount rejected">-$1,000.00</div>
+                </div>
+                <div class="transaction-details">
+                    <div class="transaction-card">Apple® Card</div>
+                </div>
+                <div class="status-badge status-rejected">Rejected</div>
+            </div>
+            
+            <!-- Reversed Deposit -->
+            <div class="history-card reversed" data-type="reversed">
+                <div class="card-top-row">
+                    <div class="transaction-type">Reversed Deposit</div>
+                    <div class="transaction-amount reversed">-$2,000.00</div>
+                </div>
+                <div class="transaction-details">
+                    <div class="transaction-card">Apple® Card</div>
+                </div>
+                <div class="status-badge status-reversed">Reversed</div>
+            </div>
+            
+            <!-- Reversed Deposit -->
+            <div class="history-card reversed" data-type="reversed">
+                <div class="card-top-row">
+                    <div class="transaction-type">Reversed Deposit</div>
+                    <div class="transaction-amount reversed">-$500.00</div>
+                </div>
+                <div class="transaction-details">
+                    <div class="transaction-card">Apple® Card</div>
+                </div>
+                <div class="status-badge status-reversed">Reversed</div>
+            </div>
+            
+            <!-- Card Deposit -->
+            <div class="history-card card-deposit" data-type="deposit">
+                <div class="card-top-row">
+                    <div class="transaction-type">Card Deposit</div>
+                    <div class="transaction-amount card-deposit">+$169.00</div>
+                </div>
+                <div class="transaction-details">
+                    <div class="transaction-card">Green Dot® Visa® Card</div>
+                </div>
+                <div class="status-badge status-deposit">Completed</div>
+            </div>
+            
+            <!-- Direct Deposit -->
+            <div class="history-card deposit" data-type="deposit">
+                <div class="card-top-row">
+                    <div class="transaction-type">Direct Deposit</div>
+                    <div class="transaction-amount deposit">+$175,000.00</div>
+                </div>
+                <div class="transaction-details">
+                    <div class="transaction-from">From Katie Cox</div>
+                    <div class="transaction-date">Nov 9th</div>
+                </div>
+                <div class="status-badge status-deposit">Completed</div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="home.html" class="nav-button">
+            <i class="fas fa-home"></i>
+        </a>
+        <a href="history.html" class="nav-button active">
+            <i class="fas fa-history"></i>
+        </a>
+    </nav>
+
+    <script>
+        // Toggle balance visibility
+        const eyeIcon = document.getElementById('balanceEyeIcon');
+        const balanceAmount = document.getElementById('balanceAmount');
+        const originalBalance = '$179,056 USD';
+        let balanceVisible = true;
+        
+        eyeIcon.addEventListener('click', function() {
+            if (balanceVisible) {
+                balanceAmount.textContent = '******* USD';
+                eyeIcon.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            } else {
+                balanceAmount.textContent = originalBalance;
+                eyeIcon.innerHTML = '<i class="fas fa-eye"></i>';
+            }
+            balanceVisible = !balanceVisible;
+        });
+        
+        // Hamburger menu functionality
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const hamburgerMenu = document.getElementById('hamburgerMenu');
+        const menuBackdrop = document.getElementById('menuBackdrop');
+        let menuOpen = false;
+        
+        hamburgerBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleMenu();
+        });
+        
+        menuBackdrop.addEventListener('click', function() {
+            closeMenu();
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (menuOpen && !hamburgerBtn.contains(e.target) && !hamburgerMenu.contains(e.target)) {
+                closeMenu();
+            }
+        });
+        
+        function toggleMenu() {
+            if (menuOpen) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        }
+        
+        function openMenu() {
+            hamburgerMenu.classList.add('active');
+            menuBackdrop.classList.add('active');
+            menuOpen = true;
+        }
+        
+        function closeMenu() {
+            hamburgerMenu.classList.remove('active');
+            menuBackdrop.classList.remove('active');
+            menuOpen = false;
+        }
+        
+        // Filter functionality
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const historyCards = document.querySelectorAll('.history-card');
+        
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Update active button
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.getAttribute('data-filter');
+                
+                // Filter cards
+                historyCards.forEach(card => {
+                    const cardType = card.getAttribute('data-type');
+                    
+                    if (filter === 'all' || cardType === filter) {
+                        card.style.display = 'block';
+                        // Add animation for appearing cards
+                        card.style.animation = 'cardEntrance 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        // Card click animation
+        historyCards.forEach(card => {
+            card.addEventListener('click', function() {
+                // Add a click effect
+                this.style.transform = 'translateY(-3px) translateZ(15px) scale(1.02)';
+                
+                setTimeout(() => {
+                    this.style.transform = 'translateY(-5px) translateZ(10px)';
+                }, 150);
+                
+                // Show transaction details
+                const type = this.querySelector('.transaction-type').textContent;
+                const amount = this.querySelector('.transaction-amount').textContent;
+                
+                // Get the description based on card type
+                let description = '';
+                if (this.classList.contains('deposit')) {
+                    description = this.querySelector('.transaction-from').textContent;
+                } else {
+                    description = this.querySelector('.transaction-card').textContent;
+                }
+                
+                alert(`Transaction Details:\n\nType: ${type}\nAmount: ${amount}\n${description}`);
+            });
+        });
+        
+        // Update active nav button
+        const navButtons = document.querySelectorAll('.nav-button');
+        navButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                navButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Add subtle 3D effect on mouse move
+        document.addEventListener('mousemove', function(e) {
+            const cards = document.querySelectorAll('.history-card');
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            
+            cards.forEach(card => {
+                card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg) translateZ(10px)`;
+            });
+        });
+    </script>
+</body>
+</html>
