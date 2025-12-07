@@ -23,7 +23,165 @@
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
-            perspective: 1000px;
+            transition: all 0.4s ease;
+        }
+        
+        /* Sidebar Menu - SAME AS HOME.HTML */
+        .sidebar-menu {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+            z-index: 1000;
+            transition: left 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 5px 0 30px rgba(0, 0, 0, 0.15);
+            overflow-y: auto;
+            transform: perspective(1000px) rotateY(5deg);
+            transform-origin: left center;
+        }
+        
+        .sidebar-menu.open {
+            left: 0;
+            transform: perspective(1000px) rotateY(0deg);
+        }
+        
+        .sidebar-header {
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #003C32 0%, #0A5A45 100%);
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+        
+        .sidebar-header::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: linear-gradient(to bottom, rgba(0, 60, 50, 0.9), transparent);
+        }
+        
+        .sidebar-user {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .sidebar-user-photo {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #000, #333);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .sidebar-user-info h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .sidebar-user-info p {
+            font-size: 12px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .sidebar-nav {
+            flex: 1;
+            padding: 40px 0 20px;
+        }
+        
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 18px 25px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sidebar-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, rgba(10, 90, 69, 0.1), transparent);
+            transition: width 0.3s ease;
+        }
+        
+        .sidebar-item:hover {
+            background-color: rgba(10, 90, 69, 0.05);
+            border-left: 4px solid #0A5A45;
+            transform: translateX(5px);
+        }
+        
+        .sidebar-item:hover::before {
+            width: 100%;
+        }
+        
+        .sidebar-item i {
+            width: 24px;
+            text-align: center;
+            color: #0A5A45;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-item:hover i {
+            transform: scale(1.2);
+        }
+        
+        .sidebar-item span {
+            font-weight: 500;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-item:hover span {
+            color: #0A5A45;
+            font-weight: 600;
+        }
+        
+        .sidebar-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #ddd, transparent);
+            margin: 20px 25px;
+        }
+        
+        .logout-item {
+            color: #ff3b30;
+            margin-top: 10px;
+        }
+        
+        .logout-item i {
+            color: #ff3b30;
+        }
+        
+        .logout-item:hover {
+            background-color: rgba(255, 59, 48, 0.05);
+            border-left: 4px solid #ff3b30;
+        }
+        
+        .logout-item:hover i {
+            transform: rotate(-10deg) scale(1.2);
         }
         
         /* App Header */
@@ -36,78 +194,35 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
             position: sticky;
             top: 0;
-            z-index: 10;
+            z-index: 100;
         }
         
         .hamburger-menu {
             font-size: 20px;
             cursor: pointer;
-            position: relative;
+            padding: 10px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
         }
         
-        /* Hamburger Menu Dropdown */
-        .hamburger-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            width: 200px;
-            padding: 10px 0;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px) translateZ(-20px);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 100;
-            transform-style: preserve-3d;
-        }
-        
-        .hamburger-dropdown.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(5px) translateZ(0);
-        }
-        
-        .menu-item {
-            padding: 14px 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: #333;
-            transition: all 0.2s ease;
-            transform-style: preserve-3d;
-        }
-        
-        .menu-item:hover {
+        .hamburger-menu:hover {
             background-color: #f5f5f5;
-            transform: translateX(5px) translateZ(5px);
-        }
-        
-        .menu-item i {
-            width: 20px;
-            text-align: center;
-            color: #0A5A45;
-        }
-        
-        .menu-divider {
-            height: 1px;
-            background-color: #eee;
-            margin: 8px 0;
+            transform: scale(1.1);
         }
         
         .logo-container {
             display: flex;
             align-items: center;
             gap: 8px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
         }
         
         .greendot-logo {
             display: flex;
             align-items: center;
             gap: 10px;
-            transform-style: preserve-3d;
         }
         
         .greendot-dot {
@@ -115,14 +230,13 @@
             height: 12px;
             border-radius: 50%;
             background: linear-gradient(135deg, #00FF73, #00C853);
-            transform: translateZ(5px);
+            box-shadow: 0 0 10px rgba(0, 255, 115, 0.5);
         }
         
         .greendot-text {
             display: flex;
             flex-direction: column;
             line-height: 1;
-            transform-style: preserve-3d;
         }
         
         .greendot-name {
@@ -130,7 +244,6 @@
             font-weight: 600;
             font-size: 18px;
             letter-spacing: -0.3px;
-            transform: translateZ(3px);
         }
         
         .greendot-bank {
@@ -139,19 +252,25 @@
             font-size: 10px;
             text-align: right;
             margin-top: -1px;
-            transform: translateZ(2px);
         }
         
         .notification-bell {
             font-size: 20px;
             cursor: pointer;
-            transform-style: preserve-3d;
+            padding: 10px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .notification-bell:hover {
+            background-color: #f5f5f5;
+            transform: scale(1.1);
         }
         
         /* Main Container */
         .main-container {
             padding: 20px;
-            transform-style: preserve-3d;
+            perspective: 1000px;
         }
         
         /* Page Header */
@@ -378,7 +497,7 @@
             box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.05);
             border-top-left-radius: 20px;
             border-top-right-radius: 20px;
-            z-index: 10;
+            z-index: 100;
             transform-style: preserve-3d;
         }
         
@@ -449,23 +568,40 @@
             transform: translateZ(10px);
         }
         
-        /* Backdrop for hamburger menu */
-        .menu-backdrop {
+        /* Overlay for sidebar */
+        .sidebar-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.3);
-            z-index: 99;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(3px);
         }
         
-        .menu-backdrop.active {
+        .sidebar-overlay.active {
             opacity: 1;
             visibility: visible;
+        }
+        
+        /* 3D Effect for sidebar */
+        @keyframes slideIn {
+            0% {
+                transform: perspective(1000px) rotateY(15deg) translateX(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: perspective(1000px) rotateY(0deg) translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .sidebar-menu.open {
+            animation: slideIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
         }
         
         /* Animation for card entrance */
@@ -502,29 +638,55 @@
                 padding: 7px 14px;
                 font-size: 12px;
             }
+            
+            .sidebar-menu {
+                width: 85%;
+                max-width: 250px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Sidebar Menu - SAME AS HOME.HTML -->
+    <div class="sidebar-menu" id="sidebarMenu">
+        <div class="sidebar-header">
+            <div class="sidebar-user">
+                <div class="sidebar-user-photo">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="sidebar-user-info">
+                    <h4>Alfred Tercero</h4>
+                    <p>GreenDot Bank Customer</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="sidebar-nav">
+            <a href="home.html" class="sidebar-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="history.html" class="sidebar-item">
+                <i class="fas fa-history"></i>
+                <span>Transaction History</span>
+            </a>
+            
+            <div class="sidebar-divider"></div>
+            
+            <a href="index.html" class="sidebar-item logout-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
     <!-- App Header -->
     <header class="app-header">
         <div class="hamburger-menu" id="hamburgerBtn">
             <i class="fas fa-bars"></i>
-            <div class="hamburger-dropdown" id="hamburgerMenu">
-                <a href="home.html" class="menu-item">
-                    <i class="fas fa-home"></i>
-                    <span>Home</span>
-                </a>
-                <a href="history.html" class="menu-item">
-                    <i class="fas fa-history"></i>
-                    <span>History</span>
-                </a>
-                <div class="menu-divider"></div>
-                <a href="index.html" class="menu-item">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Logout</span>
-                </a>
-            </div>
         </div>
         <div class="logo-container">
             <div class="greendot-logo">
@@ -539,9 +701,6 @@
             <i class="fas fa-bell"></i>
         </div>
     </header>
-    
-    <!-- Menu Backdrop -->
-    <div class="menu-backdrop" id="menuBackdrop"></div>
     
     <!-- Main Content -->
     <main class="main-container">
@@ -678,46 +837,57 @@
             balanceVisible = !balanceVisible;
         });
         
-        // Hamburger menu functionality
+        // SIDEBAR FUNCTIONALITY - SAME AS HOME.HTML
         const hamburgerBtn = document.getElementById('hamburgerBtn');
-        const hamburgerMenu = document.getElementById('hamburgerMenu');
-        const menuBackdrop = document.getElementById('menuBackdrop');
-        let menuOpen = false;
+        const sidebarMenu = document.getElementById('sidebarMenu');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        let sidebarOpen = false;
         
+        // Open sidebar when hamburger is clicked
         hamburgerBtn.addEventListener('click', function(e) {
             e.stopPropagation();
-            toggleMenu();
+            openSidebar();
         });
         
-        menuBackdrop.addEventListener('click', function() {
-            closeMenu();
+        // Close sidebar when overlay is clicked
+        sidebarOverlay.addEventListener('click', function() {
+            closeSidebar();
         });
         
-        // Close menu when clicking outside
-        document.addEventListener('click', function(e) {
-            if (menuOpen && !hamburgerBtn.contains(e.target) && !hamburgerMenu.contains(e.target)) {
-                closeMenu();
+        // Close sidebar when clicking on any sidebar link
+        document.querySelectorAll('.sidebar-item').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.stopPropagation();
+                // Let the link work normally after closing sidebar
+                setTimeout(() => {
+                    closeSidebar();
+                }, 300);
+            });
+        });
+        
+        // Close sidebar with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && sidebarOpen) {
+                closeSidebar();
             }
         });
         
-        function toggleMenu() {
-            if (menuOpen) {
-                closeMenu();
-            } else {
-                openMenu();
-            }
+        function openSidebar() {
+            sidebarMenu.classList.add('open');
+            sidebarOverlay.classList.add('active');
+            sidebarOpen = true;
+            
+            // Prevent body scrolling when sidebar is open
+            document.body.style.overflow = 'hidden';
         }
         
-        function openMenu() {
-            hamburgerMenu.classList.add('active');
-            menuBackdrop.classList.add('active');
-            menuOpen = true;
-        }
-        
-        function closeMenu() {
-            hamburgerMenu.classList.remove('active');
-            menuBackdrop.classList.remove('active');
-            menuOpen = false;
+        function closeSidebar() {
+            sidebarMenu.classList.remove('open');
+            sidebarOverlay.classList.remove('active');
+            sidebarOpen = false;
+            
+            // Restore body scrolling
+            document.body.style.overflow = '';
         }
         
         // Filter functionality
