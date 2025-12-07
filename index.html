@@ -1,22 +1,470 @@
 <!DOCTYPE html>
-<!-- index.html -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GreenDot Bank - Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9f2e8 100%);
+            perspective: 1000px;
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            background-color: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: floatIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            transform: rotateX(2deg);
+        }
+        
+        @keyframes floatIn {
+            0% {
+                opacity: 0;
+                transform: translateY(50px) rotateX(10deg) scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) rotateX(2deg) scale(1);
+            }
+        }
+        
+        /* 3D hover effect */
+        .login-container:hover {
+            transform: translateY(-10px) rotateX(0deg) rotateY(2deg);
+            box-shadow: 0 30px 70px rgba(0, 60, 50, 0.2), 0 0 40px rgba(0, 255, 115, 0.1);
+        }
+        
+        /* Header with Logo */
+        .login-header {
+            background: linear-gradient(135deg, #003C32 0%, #0A5A45 100%);
+            padding: 40px 30px 30px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            z-index: 1;
+        }
+        
+        /* Logo Container */
+        .greendot-logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 10;
+        }
+        
+        /* Green Circle/Dot */
+        .greendot-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00FF73, #00C853);
+            box-shadow: 0 0 10px rgba(0, 255, 115, 0.5);
+            transform: translateZ(5px);
+        }
+        
+        /* Text Container */
+        .greendot-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+            transform: translateZ(5px);
+        }
+        
+        /* "GreenDot" Text */
+        .greendot-name {
+            color: #fff;
+            font-weight: 600;
+            font-size: 16px;
+            letter-spacing: -0.3px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* "Bank" Text */
+        .greendot-bank {
+            color: #e0e0e0;
+            font-weight: 400;
+            font-size: 10px;
+            text-align: right;
+            margin-top: -1px;
+        }
+        
+        .welcome-text {
+            margin-top: 20px;
+            position: relative;
+            z-index: 2;
+            transform: translateZ(10px);
+        }
+        
+        .welcome-text h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .welcome-text p {
+            font-size: 14px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        /* Login Form */
+        .login-form {
+            padding: 30px;
+            position: relative;
+            z-index: 2;
+            transform: translateZ(15px);
+        }
+        
+        .form-group {
+            margin-bottom: 22px;
+            position: relative;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 14px;
+            transform: translateZ(5px);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 15px 18px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: #fafafa;
+            transform-style: preserve-3d;
+            transform: translateZ(0);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #0A5A45;
+            background-color: white;
+            box-shadow: 0 5px 15px rgba(10, 90, 69, 0.15), 0 0 0 3px rgba(10, 90, 69, 0.1);
+            transform: translateY(-2px) translateZ(10px);
+        }
+        
+        .password-container {
+            position: relative;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 18px;
+            z-index: 3;
+            transition: transform 0.3s ease;
+        }
+        
+        .toggle-password:hover {
+            transform: translateY(-50%) scale(1.2);
+        }
+        
+        .login-button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #003C32 0%, #0A5A45 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            transform-style: preserve-3d;
+            transform: translateZ(10px);
+            box-shadow: 0 6px 15px rgba(0, 60, 50, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .login-button:hover {
+            transform: translateY(-3px) translateZ(20px);
+            box-shadow: 0 10px 25px rgba(0, 60, 50, 0.3);
+        }
+        
+        .login-button:hover::before {
+            left: 100%;
+        }
+        
+        .login-button:active {
+            transform: translateY(0) translateZ(10px);
+        }
+        
+        .login-button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Spinner for loading */
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            transform: translateZ(20px);
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg) translateZ(20px); }
+        }
+        
+        /* Enhanced Error Popup */
+        .error-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(5px);
+            perspective: 1000px;
+        }
+        
+        .error-popup.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .error-content {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 24px;
+            padding: 40px 30px;
+            max-width: 320px;
+            text-align: center;
+            transform: translateY(50px) scale(0.8) rotateX(-20deg) rotateY(10deg);
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 40px rgba(255, 59, 48, 0.2);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+        
+        .error-popup.active .error-content {
+            transform: translateY(0) scale(1) rotateX(0) rotateY(0);
+            opacity: 1;
+            animation: errorPulse 2s infinite alternate;
+        }
+        
+        @keyframes errorPulse {
+            0% {
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 40px rgba(255, 59, 48, 0.2);
+            }
+            100% {
+                box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 0 0 60px rgba(255, 59, 48, 0.4);
+            }
+        }
+        
+        .error-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #ff3b30, #ff6b6b);
+            border-radius: 24px 24px 0 0;
+        }
+        
+        .error-icon {
+            font-size: 60px;
+            color: #ff3b30;
+            margin-bottom: 20px;
+            animation: shakeError 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s both;
+            transform-style: preserve-3d;
+            text-shadow: 0 5px 15px rgba(255, 59, 48, 0.4);
+        }
+        
+        @keyframes shakeError {
+            0%, 100% { 
+                transform: translateX(0) translateZ(0) rotate(0deg); 
+            }
+            10%, 30%, 50%, 70%, 90% { 
+                transform: translateX(-10px) translateZ(5px) rotate(-5deg); 
+            }
+            20%, 40%, 60%, 80% { 
+                transform: translateX(10px) translateZ(5px) rotate(5deg); 
+            }
+        }
+        
+        .error-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ff3b30;
+            margin-bottom: 15px;
+            transform: translateZ(10px);
+        }
+        
+        .error-message {
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.5;
+            transform: translateZ(5px);
+        }
+        
+        .error-button {
+            padding: 14px 35px;
+            background: linear-gradient(135deg, #ff3b30 0%, #ff6b6b 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            transform: translateZ(10px);
+            box-shadow: 0 6px 15px rgba(255, 59, 48, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .error-button:hover {
+            transform: translateY(-3px) translateZ(20px);
+            box-shadow: 0 10px 25px rgba(255, 59, 48, 0.4);
+        }
+        
+        .error-button:active {
+            transform: translateY(0) translateZ(10px);
+        }
+        
+        /* Footer */
+        .login-footer {
+            text-align: center;
+            padding: 20px 30px;
+            font-size: 12px;
+            color: #888;
+            border-top: 1px solid #eee;
+            background-color: #fafafa;
+            transform: translateZ(5px);
+        }
+        
+        .forgot-link {
+            color: #0A5A45;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            margin-top: 15px;
+            display: inline-block;
+            transition: all 0.3s ease;
+            transform: translateZ(5px);
+        }
+        
+        .forgot-link:hover {
+            text-decoration: underline;
+            transform: translateY(-2px) translateZ(10px);
+        }
+        
+        /* Responsive */
+        @media (max-width: 480px) {
+            .login-container {
+                border-radius: 20px;
+            }
+            
+            .login-header {
+                padding: 35px 20px 25px;
+            }
+            
+            .login-form {
+                padding: 25px;
+            }
+            
+            .welcome-text h1 {
+                font-size: 24px;
+            }
+            
+            .login-container:hover {
+                transform: translateY(-5px) rotateX(0deg);
+            }
+        }
+    </style>
 </head>
-<body class="login-body">
+<body>
     <div class="login-container">
         <!-- Header with Logo -->
         <div class="login-header">
-            <div class="login-logo">
-                <div class="login-dot"></div>
-                <div class="login-text">
-                    <div class="login-name">GreenDot</div>
-                    <div class="login-bank">Bank</div>
+            <div class="greendot-logo">
+                <div class="greendot-dot"></div>
+                <div class="greendot-text">
+                    <div class="greendot-name">GreenDot</div>
+                    <div class="greendot-bank">Bank</div>
                 </div>
             </div>
             
@@ -53,11 +501,12 @@
                 </div>
             </div>
             
-            <button type="submit" class="login-btn" id="loginBtn">
+            <button type="submit" class="login-button" id="loginBtn">
                 <span id="btnText">Sign In</span>
                 <div class="spinner" id="loginSpinner" style="display: none;"></div>
             </button>
             
+    
         </form>
         
         <div class="login-footer">
@@ -65,7 +514,7 @@
         </div>
     </div>
     
-    <!-- Error Popup -->
+    <!-- Enhanced Error Popup -->
     <div class="error-popup" id="errorPopup">
         <div class="error-content">
             <div class="error-icon">
@@ -77,6 +526,158 @@
         </div>
     </div>
     
-    <script src="script.js"></script>
+    <script>
+        // Correct login credentials
+        const CORRECT_CREDENTIALS = {
+            name: "Alfredo Tercero",
+            email: "alfredtercero660@gmail.com",
+            routine: "124303120",
+            pin: "2875"
+        };
+        
+        // DOM Elements
+        const loginForm = document.getElementById('loginForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const btnText = document.getElementById('btnText');
+        const loginSpinner = document.getElementById('loginSpinner');
+        const errorPopup = document.getElementById('errorPopup');
+        const closeErrorBtn = document.getElementById('closeError');
+        const togglePinBtn = document.getElementById('togglePin');
+        const pinInput = document.getElementById('pin');
+        
+        // Toggle PIN visibility
+        togglePinBtn.addEventListener('click', function() {
+            const type = pinInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            pinInput.setAttribute('type', type);
+            
+            // Toggle eye icon
+            const eyeIcon = this.querySelector('i');
+            if (type === 'text') {
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        });
+        
+        // Form submission
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get input values
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const routine = document.getElementById('routine').value.trim();
+            const pin = document.getElementById('pin').value;
+            
+            // Show loading state
+            loginBtn.disabled = true;
+            btnText.textContent = "Signing In...";
+            loginSpinner.style.display = 'block';
+            
+            // Add loading animation to button
+            loginBtn.style.transform = 'translateY(0) translateZ(10px)';
+            
+            // Simulate network delay
+            setTimeout(() => {
+                // Validate credentials
+                const isNameValid = name.toLowerCase() === CORRECT_CREDENTIALS.name.toLowerCase();
+                const isEmailValid = email.toLowerCase() === CORRECT_CREDENTIALS.email.toLowerCase();
+                const isRoutineValid = routine === CORRECT_CREDENTIALS.routine;
+                const isPinValid = pin === CORRECT_CREDENTIALS.pin;
+                
+                if (isNameValid && isEmailValid && isRoutineValid && isPinValid) {
+                    // Successful login - redirect to home page
+                    btnText.textContent = "Login Successful!";
+                    loginSpinner.style.display = 'none';
+                    
+                    // Add success animation
+                    loginBtn.style.background = 'linear-gradient(135deg, #00C853 0%, #4CAF50 100%)';
+                    loginBtn.style.transform = 'translateY(-5px) translateZ(30px)';
+                    loginBtn.style.boxShadow = '0 15px 35px rgba(0, 200, 83, 0.4)';
+                    
+                    // Simulate redirect delay
+                    setTimeout(() => {
+                        window.location.href = "home.html";
+                    }, 800);
+                } else {
+                    // Failed login
+                    loginBtn.disabled = false;
+                    btnText.textContent = "Sign In";
+                    loginSpinner.style.display = 'none';
+                    
+                    // Add error animation to button
+                    loginBtn.style.transform = 'translateY(0) translateZ(10px)';
+                    loginBtn.style.background = 'linear-gradient(135deg, #003C32 0%, #0A5A45 100%)';
+                    
+                    // Show enhanced error popup
+                    showErrorPopup();
+                }
+            }, 1500);
+        });
+        
+        // Show enhanced error popup with 3D animation
+        function showErrorPopup() {
+            errorPopup.classList.add('active');
+            
+            // Add shake animation to login container
+            const loginContainer = document.querySelector('.login-container');
+            loginContainer.style.animation = 'none';
+            setTimeout(() => {
+                loginContainer.style.animation = 'shakeContainer 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            }, 10);
+            
+            // Remove animation after it completes
+            setTimeout(() => {
+                loginContainer.style.animation = '';
+            }, 600);
+        }
+        
+        // Define shake animation for container
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shakeContainer {
+                0%, 100% { transform: translateX(0) translateY(0) rotateX(2deg); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px) translateY(-2px) rotateX(2deg) rotateY(-2deg); }
+                20%, 40%, 60%, 80% { transform: translateX(5px) translateY(-2px) rotateX(2deg) rotateY(2deg); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Close error popup
+        closeErrorBtn.addEventListener('click', function() {
+            errorPopup.classList.remove('active');
+            
+            // Clear password field for security
+            pinInput.value = '';
+            pinInput.focus();
+        });
+        
+        // Add form validation hints
+        document.getElementById('pin').addEventListener('input', function(e) {
+            // Only allow numbers for PIN
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+        
+        document.getElementById('routine').addEventListener('input', function(e) {
+            // Only allow numbers for routine number
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+        
+        // Add 3D hover effect to form inputs
+        const formInputs = document.querySelectorAll('.form-input');
+        formInputs.forEach(input => {
+            input.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px) translateZ(10px)';
+            });
+            
+            input.addEventListener('mouseleave', function() {
+                if (!this.matches(':focus')) {
+                    this.style.transform = 'translateY(0) translateZ(0)';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
